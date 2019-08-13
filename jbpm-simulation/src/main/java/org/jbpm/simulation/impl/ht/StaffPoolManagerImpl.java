@@ -30,8 +30,9 @@ public class StaffPoolManagerImpl implements StaffPoolManager {
 	}
 	
 	public void registerPool(String processId, Node element, long simulationDuration) {
-
+		
 	    if (!registeredPools.containsKey(element.getName())) {
+	    	System.out.println(String.format("registering pool for process model:%s, node:%s, duration:%d", processId,element.getName(),simulationDuration));
     		StaffPool pool = new StaffPoolImpl(processId, element, simulationDuration);
     		registeredPools.put(element.getName(), pool);
 	    }

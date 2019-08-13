@@ -76,6 +76,7 @@ public class SimulationContext {
     }
 
     public void setStartTime(long startTime) {
+    	System.out.println(String.format("setting start time: %s for context %s", startTime, this.toString()));
         this.startTime = startTime;
     }
 
@@ -92,6 +93,7 @@ public class SimulationContext {
     }
 
     public void setClock(SessionPseudoClock clock) {
+    	System.out.println(String.format("setting clock: %s for context %s", clock.toString(), this.toString()));
         this.clock = clock;
     }
 

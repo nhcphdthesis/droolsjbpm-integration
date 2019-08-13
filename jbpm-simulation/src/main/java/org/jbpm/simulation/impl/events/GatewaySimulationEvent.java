@@ -55,6 +55,6 @@ public class GatewaySimulationEvent extends GenericSimulationEvent {
     @Override
     public String toString() {
         
-        return "StartSimulationEvent[process=" + processId + ", instance=" + processInstanceId + ", activity=" + activityName + ", startTime=" + new Date(startTime)+"]";
+        return "GatewaySimulationEvent[process=" + processId + ", instance=" + processInstanceId + ", activity=" + activityName + ", startTime=" + new Date(startTime)+"]";
     }
 }

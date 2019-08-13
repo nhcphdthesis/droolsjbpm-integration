@@ -31,7 +31,7 @@ public class SimulationStartNodeInstance extends StartNodeInstance {
 
     @Override
     public void internalTrigger(NodeInstance from, String type) {
-        
+        System.out.println("Simulation StartNode internal trigger");
         SimulationContext context = SimulationContext.getContext();
 
         ActivitySimulator simulator = context.getRegistry().getSimulator(getNode());
@@ -43,7 +43,7 @@ public class SimulationStartNodeInstance extends StartNodeInstance {
         List<Connection> outgoing = getNode().getOutgoingConnections().get(Node.CONNECTION_DEFAULT_TYPE);
         for (Connection conn : outgoing) {
             if (context.getCurrentPath().getSequenceFlowsIds().contains(conn.getMetaData().get("UniqueId"))) {
-
+            	System.out.println("connection after start node: "+conn.toString());
                 triggerConnection(conn);
             }
         }

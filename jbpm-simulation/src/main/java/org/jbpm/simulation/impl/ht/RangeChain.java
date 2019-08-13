@@ -25,15 +25,18 @@ public class RangeChain {
     private Set<Range> availableRanges = new TreeSet<Range>();
     
     public void addRange(Range range) {
+    	System.out.println(String.format("adding range: start: %d, end: %d", range.getStart(),range.getEnd()));
         this.availableRanges.add(range);
     }
     
     public long allocateWork(long startTime, long duration) {
         AllocatedWork allocatedWork = new AllocatedWork(duration);
         Interval previousRange = null;
+        
         for (Range range : availableRanges) {
+        	System.out.println(String.format("current range: start: %d, end: %d", range.getStart(),range.getEnd()));
             if (range.contains(startTime)) {
-               
+                System.out.println("range.contains(startTime)");
                 allocatedWork.merge(range.allocate(startTime, duration));
                 
                 if (allocatedWork.isAllocated()) {

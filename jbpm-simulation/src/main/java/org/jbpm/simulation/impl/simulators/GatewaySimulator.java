@@ -32,12 +32,14 @@ public class GatewaySimulator implements ActivitySimulator {
 
     public SimulationEvent simulate(Object activity, SimulationContext context) {
         NodeInstance gateway = (NodeInstance) activity;
+        
         long startTime = context.getClock().getCurrentTime();
         Map<String, Object> metadata = gateway.getNode().getMetaData();
         
         ProcessInstance pi = gateway.getProcessInstance();
         Node node = gateway.getNode();
         String bpmn2NodeId = (String) metadata.get("UniqueId");
+        System.out.println("similate gateway: "+gateway.toString()+", NodeUniqueId: "+bpmn2NodeId);
         // todo
         long duration = 0;
         
@@ -48,7 +50,7 @@ public class GatewaySimulator implements ActivitySimulator {
         context.setMaxEndTime(context.getClock().getCurrentTime());
         SimulationDataProvider provider = context.getDataProvider();
         String type = (String) provider.getProcessDataForNode(node).get("node.type");
-
+        System.out.println("type: "+type);
         return new GatewaySimulationEvent(pi.getProcessId(), context.getProcessInstanceId(), startTime, endTime, bpmn2NodeId, node.getName(), type);
     }
     

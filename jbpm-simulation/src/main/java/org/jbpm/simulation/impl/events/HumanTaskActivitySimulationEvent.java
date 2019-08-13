@@ -15,6 +15,8 @@
 
 package org.jbpm.simulation.impl.events;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class HumanTaskActivitySimulationEvent extends GenericSimulationEvent {
@@ -96,7 +98,7 @@ public class HumanTaskActivitySimulationEvent extends GenericSimulationEvent {
     public String toString() {
         
         return "HumanTaskActivitySimulationEvent[process=" + processId + ", instance=" 
-        + processInstanceId + ", activity=" + activityName + ", duration=" + duration/1000+" seconds" +
+        + processInstanceId + ", activity=" + activityName + ", startTime=" + new Date(startTime)+ ", endTime=" + new Date(endTime)+", duration=" + duration/1000+" seconds" +
         		", wait time=" + waitTime/1000 + " seconds , resource cost=" +resourceCost +
         		", resource utilization=" +resourceUtilization +"]";
     }

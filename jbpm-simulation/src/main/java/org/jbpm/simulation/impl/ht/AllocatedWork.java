@@ -44,9 +44,11 @@ public class AllocatedWork {
     }
     
     public boolean isAllocated() {
+    	System.out.println(String.format("IsAllocated? %s. duration+waitTime: %d, allocatedTime: %d", duration + waitTime == allocatedTime,duration+waitTime,allocatedTime));
         return duration + waitTime == allocatedTime;
     }
     public void merge(AllocatedWork allocate) {
+    	System.out.println(String.format("merging in AllocatedWork. current allocated time: %d, waiting time: %d, to allocate time: %d, wait time: %d", this.allocatedTime,this.waitTime,allocate.getAllocatedTime(),allocate.getWaitTime()));
        this.allocatedTime += allocate.getAllocatedTime();
        this.waitTime += allocate.getWaitTime();
         

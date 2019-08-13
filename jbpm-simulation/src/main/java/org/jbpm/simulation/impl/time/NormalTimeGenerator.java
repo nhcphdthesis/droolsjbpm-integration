@@ -43,13 +43,14 @@ public class NormalTimeGenerator implements TimeGenerator {
         
         long sdv = (long)SimulationUtils.asDouble(data.get(SimulationConstants.STANDARD_DEVIATION));
         sdv = timeUnit.convert(sdv, tu);
-        
+        System.out.println(String.format("generating time for normal distribution: mean %d, sdv %d", mean,sdv));
         if (sdv > 0) {
         
             long value =  (long) generator.nextGaussian(mean, sdv);
             if (value <= 0) {
                 value = mean;
             }
+            System.out.println(String.format("generated value: %d", value));
             return value;
         } else {
             return 0;

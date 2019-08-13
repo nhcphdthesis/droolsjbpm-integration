@@ -33,6 +33,7 @@ public class EventSimulator implements ActivitySimulator  {
 
     public SimulationEvent simulate(Object activity, SimulationContext context) {
         NodeInstance eventNodeInstance = (NodeInstance) activity;
+        System.out.println("similate event activity: "+eventNodeInstance.toString());
         long startTime = context.getClock().getCurrentTime();
         Map<String, Object> metadata = eventNodeInstance.getNode().getMetaData();
         
@@ -43,7 +44,7 @@ public class EventSimulator implements ActivitySimulator  {
         
         TimeGenerator timeGenerator=TimeGeneratorFactory.newTimeGenerator(provider.getSimulationDataForNode(node));
         long duration = timeGenerator.generateTime();
-        
+        System.out.println(String.format("advancing clock for activity %s with duration %d", eventNodeInstance.toString(),duration));
         context.getClock().advanceTime(duration, TimeUnit.MILLISECONDS);
         // set end time for processinstance end time
         context.setMaxEndTime(context.getClock().getCurrentTime());

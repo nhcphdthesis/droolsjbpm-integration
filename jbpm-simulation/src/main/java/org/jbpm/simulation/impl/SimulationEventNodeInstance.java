@@ -38,7 +38,7 @@ public class SimulationEventNodeInstance extends NodeInstanceImpl {
        
         ActivitySimulator simulator = context.getRegistry().getSimulator(getNode());
         SimulationEvent event = simulator.simulate(this, context);
-        
+        System.out.println("in simulationEventNodeInstance with event: "+event.toString());
         context.getRepository().storeEvent(event);
         long thisNodeCurrentTime = context.getClock().getCurrentTime();
         
@@ -60,6 +60,7 @@ public class SimulationEventNodeInstance extends NodeInstanceImpl {
         Map<String, String> throwEvents = context.getCurrentPath().getThrowEvents();
         String throwReference = throwEvents.get(getNode().getMetaData().get("UniqueId"));
         if (throwReference != null) {
+        	System.out.println("signalling event: "+throwReference.toString());
             getProcessInstance().signalEvent(throwReference, null);
         }
         setNodeId(currentNodeId);

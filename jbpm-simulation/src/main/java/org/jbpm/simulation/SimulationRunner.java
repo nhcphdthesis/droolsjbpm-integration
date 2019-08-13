@@ -30,6 +30,7 @@ import org.jbpm.simulation.impl.SimulateProcessPathCommand;
 import org.jbpm.simulation.impl.SimulationPath;
 import org.jbpm.simulation.impl.SimulationProcessValidator;
 import org.jbpm.simulation.impl.WorkingMemorySimulationRepository;
+import org.jbpm.simulation.impl.SystemOutLogger;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
@@ -75,6 +76,11 @@ public class SimulationRunner {
         SimulationContext context = SimulationContextFactory.newContext(new BPMN2SimulationDataProvider(bpmn2Container), new WorkingMemorySimulationRepository(runRules, rules));
         SimulationDataProvider provider = context.getDataProvider();
         
+        //Hongchao
+        SystemOutLogger logger = new SystemOutLogger();
+        logger.setLog(true);
+        logger.log("Philips simulation logged");
+        
         PathFinder finder = PathFinderFactory.getInstance(bpmn2Container);
         
         List<SimulationPath> paths = finder.findPaths(new SimulationFilterPathFormatConverter(provider));
@@ -89,11 +95,17 @@ public class SimulationRunner {
         ExecutableBuilder f = ExecutableBuilder.create();
 
         List<Long> startTimes = generateStartTimes(interval, numberOfAllInstances);
+        //Hongchao
+        if (startTimes.size()>3) {
+        	logger.log("First 3 start times: "+startTimes.subList(0, 3));
+        }
+        
         int startIndex = 0;
         // @formatter:off        
         int counter = 0;
         int remainingInstances = numberOfAllInstances;
         for (SimulationPath path : paths) {
+        	logger.log("path id: "+path.getPathId()+", activities: "+path.getActivityIds().toString());
             // only paths that can be started are considered
             if (!path.isStartable()) {
                 continue;

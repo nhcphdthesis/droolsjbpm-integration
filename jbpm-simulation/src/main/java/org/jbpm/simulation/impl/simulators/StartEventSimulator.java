@@ -27,7 +27,7 @@ public class StartEventSimulator implements ActivitySimulator {
 
     public SimulationEvent simulate(Object activity, SimulationContext context) {
         NodeInstance nodeInstance = (NodeInstance) activity;
-        
+        System.out.println("similate start event: "+nodeInstance.toString());
         ProcessInstance pi = nodeInstance.getProcessInstance();
 
         context.setStartTime(context.getClock().getCurrentTime());

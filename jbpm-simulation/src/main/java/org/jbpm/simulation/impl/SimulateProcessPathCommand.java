@@ -39,6 +39,7 @@ public class SimulateProcessPathCommand implements ExecutableCommand<KieSession>
     private SimulationPath path;
     
     public SimulateProcessPathCommand(String processId, SimulationContext context, SimulationPath path) {
+    	System.out.println("initializing simulateprocessoathcommand");
         this.processId = processId;
         this.simContext = context;
         this.path = path;
@@ -47,7 +48,13 @@ public class SimulateProcessPathCommand implements ExecutableCommand<KieSession>
     public KieSession execute(Context context ) {
         
         KieSession session = ((RegistryContext)context).lookup(KieSession.class);
-
+        SystemOutLogger logger = (SystemOutLogger) session.getGlobal("logger");
+        if (logger==null) {
+        	logger = new SystemOutLogger();
+        	//session.setGlobal("logger", logger);
+        }
+        logger.setLog(true);
+        logger.log("inside command with context: "+context.toString());
         session.getEnvironment().set("NodeInstanceFactoryRegistry", SimulationNodeInstanceFactoryRegistry.getInstance());
         simContext.setClock((SessionPseudoClock) session.getSessionClock());
         simContext.setCurrentPath(path);
@@ -64,13 +71,16 @@ public class SimulateProcessPathCommand implements ExecutableCommand<KieSession>
         long instanceId = -1;
         ProcessInstance pi = null;
         if (path.getSignalName() != null) {
+        	logger.log("path.getSignalName list not null");
             final List<ProcessInstance> instances = new ArrayList<ProcessInstance>();
             session.addEventListener(new DefaultProcessEventListener() {
                 @Override
                 public void beforeProcessStarted(ProcessStartedEvent event) {
+                	System.out.println("before processStarted: adding instance "+event.getProcessInstance().getId());
                     instances.add(event.getProcessInstance());
                 }
             });
+            logger.log("signaling: "+path.getSignalName());
             session.signalEvent(path.getSignalName(), null);
             if (!instances.isEmpty()) {
                 pi = instances.get(0);
@@ -78,10 +88,12 @@ public class SimulateProcessPathCommand implements ExecutableCommand<KieSession>
             }
 
         } else {
+        	logger.log("starting process instance: "+processId);
             pi = session.startProcess(processId);
             instanceId = session.getIdentifier()+pi.getId();
+            logger.log(String.format("process instance started: %s",pi.toString()));
         }
-
+        logger.log("storing process end event: "+instanceId);
         simContext.getRepository().storeEvent(new ProcessInstanceEndSimulationEvent(processId, instanceId,
                 simContext.getStartTime(), simContext.getMaxEndTime(), path.getPathId(),
                 pi.getProcessName(), pi.getProcess().getVersion()));

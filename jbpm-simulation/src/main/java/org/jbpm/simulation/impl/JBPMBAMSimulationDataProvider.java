@@ -67,7 +67,7 @@ public class JBPMBAMSimulationDataProvider implements SimulationDataProvider {
 
 
     public Map<String, Object> getSimulationDataForNode(Node node) {
-        
+        System.out.println("in BAM getting simulation data for node: "+node.getName());
         if (!processLoaded) {
             loadProcessInfo(processId);
         }

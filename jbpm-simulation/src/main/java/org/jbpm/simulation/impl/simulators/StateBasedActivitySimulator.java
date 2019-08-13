@@ -33,6 +33,7 @@ public class StateBasedActivitySimulator implements ActivitySimulator {
 
     public SimulationEvent simulate(Object activity, SimulationContext context) {
        NodeInstance stateNode = (NodeInstance) activity;
+       System.out.println("Simulate State-based activity: "+stateNode.toString());
        long startTime = context.getClock().getCurrentTime();
        Map<String, Object> metadata = stateNode.getNode().getMetaData();
        

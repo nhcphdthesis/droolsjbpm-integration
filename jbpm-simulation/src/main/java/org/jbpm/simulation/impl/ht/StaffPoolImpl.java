@@ -70,7 +70,8 @@ public class StaffPoolImpl implements StaffPool {
 		this.poolSize = (int)SimulationUtils.asDouble(properties.get(SimulationConstants.STAFF_AVAILABILITY));
 		
 		this.duration = timeGenerator.generateTime();
-		String workingHoursRange = (String) properties.get("working.hours.range");
+		String workingHoursRange = (String) properties.get("StaffPoolImpl working.hours.range");
+		System.out.println(String.format("StaffPoolImpl input working hours range: %s", workingHoursRange));
 		if (workingHoursRange != null) {
 		    
 		    String[] ranges = workingHoursRange.split(",");
@@ -82,11 +83,12 @@ public class StaffPoolImpl implements StaffPool {
 		    
 		} else {
     		long workingHoursOpt = (long)SimulationUtils.asDouble(properties.get(SimulationConstants.WORKING_HOURS));
+    		System.out.println(String.format("StaffPoolImpl workingHoursOpt: %d",workingHoursOpt));
     		if (workingHoursOpt > 0) {
     			this.workingHours = timeUnit.convert(workingHoursOpt, TimeUnit.HOURS);
     		}
-    		
-    		rangeChain.addRange(new Range(0, 24, poolSize));
+    		System.out.println(String.format("StaffPoolImpl adding default working hours range, poolSize: %d",poolSize));
+    		rangeChain.addRange(new Range(8, 18, poolSize));//Hongchao: changed default working hours
 		}
 		this.poolCapacity = poolSize * this.workingHours;
 		
@@ -102,6 +104,7 @@ public class StaffPoolImpl implements StaffPool {
 	
 	
 	protected long allocate(long startTime, long duration) {
+		System.out.println(String.format("StaffPoolImpl Allocating resource in StaffPoolImp with start time: %d, duration: %d",startTime,duration));
 		performedWork += duration;
 	    
 	    return rangeChain.allocateWork(startTime, duration);
@@ -124,6 +127,7 @@ public class StaffPoolImpl implements StaffPool {
         if (poolCapacity == 0) {
             return 0;
         }
+        System.out.println(String.format("getting resource utilization. performed work: %d, pool capacity: %d", performedWork,poolCapacity));
 		return performedWork * 100 / poolCapacity;
 	}
 

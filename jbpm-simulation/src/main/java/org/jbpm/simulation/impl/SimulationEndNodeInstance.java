@@ -33,6 +33,7 @@ public class SimulationEndNodeInstance extends EndNodeInstance {
         SimulationContext context = SimulationContext.getContext();
         
         ActivitySimulator simulator = context.getRegistry().getSimulator(getNode());
+        System.out.println("simulating end event in SENI: "+from.getNodeId());
         SimulationEvent event = simulator.simulate(this, context);
         
         context.getRepository().storeEvent(event);

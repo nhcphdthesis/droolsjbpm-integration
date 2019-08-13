@@ -22,7 +22,23 @@ import org.joda.time.Interval;
 public class Range implements Comparable<Range> {
 
     private int start;
-    private int end;
+    public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public int getEnd() {
+		return end;
+	}
+
+	public void setEnd(int end) {
+		this.end = end;
+	}
+
+	private int end;
     
     private Calendar localCalendar;
     private Interval interval;
@@ -44,7 +60,7 @@ public class Range implements Comparable<Range> {
         localCalendar.set(Calendar.HOUR_OF_DAY, end);
         long endInstant = localCalendar.getTimeInMillis();
         interval = new Interval(startInstant, endInstant);
-        
+        System.out.println(String.format("range interval start:%d, end:%d, interval:%s", startInstant,endInstant,interval.toString()));
         return interval.contains(time);
         
     }

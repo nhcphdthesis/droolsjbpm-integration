@@ -36,22 +36,31 @@ public class HumanTaskActivitySimulator implements ActivitySimulator {
     public SimulationEvent simulate(Object activity, SimulationContext context) {
         long startTime = context.getClock().getCurrentTime();
         NodeInstance stateNode = (NodeInstance) activity;
-        
+        System.out.println("simulating human activity: "+stateNode.toString());
         Map<String, Object> metadata = stateNode.getNode().getMetaData();
         
         ProcessInstance pi = stateNode.getProcessInstance();
         Node node = stateNode.getNode();
         String bpmn2NodeId = (String) metadata.get("UniqueId");
         SimulationDataProvider provider = context.getDataProvider();
+        System.out.println(String.format("getting simulation data for human node: %s, node instance: %s", node.getName(),stateNode.toString()));
         Map<String, Object> properties = provider.getSimulationDataForNode(node);
         
         TimeGenerator timeGenerator=TimeGeneratorFactory.newTimeGenerator(properties);
         long duration = timeGenerator.generateTime();
-        
+        //here 1 means simularion duration (one day)
         context.getStaffPoolManager().registerPool(pi.getProcessId(), node, 1);
         StaffPool pool = context.getStaffPoolManager().getActivityPool(node.getName());
-        
-        long waitTime = pool.allocate(context.getClock().getCurrentTime());
+        //this is where waiting time is determined. 
+        //Hongchao, introduce scheduled time
+        // if current time later than scheduled time: see if it is possible to start now
+        // if current time earlier than scheduled time: start when the scheduled time arrives
+        long scheduledStartTime = context.getClock().getCurrentTime() ;
+        System.out.println(String.format("current time: %d", scheduledStartTime));
+        //scheduledStartTime += 1000*60*60*2;//delay 2 hours
+        long waitTime = pool.allocate(scheduledStartTime);
+        System.out.println("waiting time: "+waitTime);
+        //long waitTime = pool.allocate(context.getClock().getCurrentTime());
         
         
         double resourceUtilization = pool.getResourceUtilization();
@@ -61,7 +70,7 @@ public class HumanTaskActivitySimulator implements ActivitySimulator {
         TimeUnit timeUnit = SimulationUtils.getTimeUnit(properties);
         long durationInUnit = timeUnit.convert(duration, TimeUnit.MILLISECONDS);
         double resourceCost = pool.getResourceCost() * durationInUnit;
-        
+        System.out.println(String.format("advancing clock for human activity %s (type: %s) with duration %d", node.toString(),node.getName(),durationInUnit));
         context.getClock().advanceTime((duration), TimeUnit.MILLISECONDS);
         
         // set end time for processinstance end time

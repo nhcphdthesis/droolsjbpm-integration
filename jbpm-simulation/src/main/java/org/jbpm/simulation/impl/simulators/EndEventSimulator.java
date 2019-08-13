@@ -26,10 +26,11 @@ import org.kie.api.runtime.process.ProcessInstance;
 public class EndEventSimulator implements ActivitySimulator {
 
     public SimulationEvent simulate(Object activity, SimulationContext context) {
+    	
         NodeInstance nodeInstance = (NodeInstance) activity;
         long startTime = context.getClock().getCurrentTime();
         ProcessInstance pi = nodeInstance.getProcessInstance();
-        
+        System.out.println(String.format("simulating end event of pi:%s", pi.getId()));
         Node node = nodeInstance.getNode();
         String bpmn2NodeId = (String) node.getMetaData().get("UniqueId");
         

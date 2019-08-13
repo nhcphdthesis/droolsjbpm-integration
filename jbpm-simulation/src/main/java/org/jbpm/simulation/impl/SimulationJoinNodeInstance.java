@@ -43,6 +43,7 @@ public class SimulationJoinNodeInstance extends NodeInstanceImpl {
         SimulationContext context = SimulationContext.getContext();
 
         ActivitySimulator simulator = context.getRegistry().getSimulator(getNode());
+        System.out.println("simulating in SJNI");
         SimulationEvent event = simulator.simulate(this, context);
 
         context.getRepository().storeEvent(event);

@@ -85,6 +85,7 @@ public class BPMN2SimulationDataProvider implements SimulationDataProvider {
     }
     public Map<String, Object> getSimulationDataForNode(
             String nodeId) {
+    	System.out.println("get BPMN2 Simulation data for node: "+nodeId);
         boolean reverse = false;
         if (nodeId.startsWith("$reverseprops$")) {
             reverse = true;
@@ -190,6 +191,7 @@ public class BPMN2SimulationDataProvider implements SimulationDataProvider {
         		}
         	}
         }
+        System.out.println("properties: "+properties.toString());
         return properties;
     }
 
