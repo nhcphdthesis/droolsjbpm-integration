@@ -32,6 +32,8 @@ import org.eclipse.bpmn2.SubProcess;
 import org.jbpm.simulation.PathContext;
 import org.jbpm.simulation.PathContextManager;
 import org.jbpm.simulation.util.BPMN2Utils;
+import org.eclipse.bpmn2.IntermediateCatchEvent;
+import org.eclipse.bpmn2.TimerEventDefinition;
 
 public class MainElementHandler implements ElementHandler {
     
@@ -63,6 +65,8 @@ public class MainElementHandler implements ElementHandler {
                 handled = HandlerRegistry.getHandler(element).handle(element, manager);
             } else if (element instanceof IntermediateThrowEvent) {
                 handled = HandlerRegistry.getHandler(element).handle(element, manager);
+            //} else if (element instanceof IntermediateCatchEvent) {//Hongchao
+                //handled = HandlerRegistry.getHandler(element).handle(element, manager);
             } else {
                 handled = HandlerRegistry.getHandler().handle(element, manager);
             }
@@ -97,6 +101,15 @@ public class MainElementHandler implements ElementHandler {
             EndEvent end = (EndEvent) startAt;
 
             throwDefinitions = end.getEventDefinitions();
+        } else if (startAt instanceof IntermediateCatchEvent) { //Hongchao
+        	for (EventDefinition ed : ((IntermediateCatchEvent) startAt).getEventDefinitions()) {
+        		if (ed instanceof TimerEventDefinition) {
+        			System.out.println("Philips returning timer event definitions for: "+((IntermediateCatchEvent) startAt).toString());
+        			throwDefinitions = ((IntermediateCatchEvent) startAt).getEventDefinitions();
+        			System.out.println("Event definition: "+((TimerEventDefinition) ed).toString());
+        			break;
+        		}
+        	}
         }
 
         return throwDefinitions;

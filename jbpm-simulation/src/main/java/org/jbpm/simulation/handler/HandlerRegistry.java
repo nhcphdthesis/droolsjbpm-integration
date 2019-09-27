@@ -18,10 +18,13 @@ package org.jbpm.simulation.handler;
 import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.AdHocSubProcess;
 import org.eclipse.bpmn2.EndEvent;
+import org.eclipse.bpmn2.EventDefinition;
 import org.eclipse.bpmn2.Gateway;
 import org.eclipse.bpmn2.GatewayDirection;
 import org.eclipse.bpmn2.IntermediateThrowEvent;
 import org.eclipse.bpmn2.SubProcess;
+import org.eclipse.bpmn2.TimerEventDefinition;
+import org.eclipse.bpmn2.IntermediateCatchEvent;;
 
 public class HandlerRegistry {
 
@@ -48,6 +51,13 @@ public class HandlerRegistry {
         } else if (flowElement instanceof EndEvent) {
 
             return new EventElementHandler();
+        } else if (flowElement instanceof IntermediateCatchEvent) {//Hongchao
+        	for (EventDefinition ed : ((IntermediateCatchEvent) flowElement).getEventDefinitions()) {
+        		if (ed instanceof TimerEventDefinition) {
+        			System.out.println("Philips returning TimerEventHander");
+        			//return new TimerEventHandler();
+        		}
+        }        
         }
         return null;
     }

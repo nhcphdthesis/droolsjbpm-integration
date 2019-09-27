@@ -25,6 +25,7 @@ import org.jbpm.simulation.SimulationEvent;
 import org.jbpm.simulation.TimeGenerator;
 import org.jbpm.simulation.TimeGeneratorFactory;
 import org.jbpm.simulation.impl.events.ActivitySimulationEvent;
+import org.jbpm.workflow.core.node.TimerNode;
 import org.kie.api.definition.process.Node;
 import org.kie.api.runtime.process.NodeInstance;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -39,11 +40,16 @@ public class EventSimulator implements ActivitySimulator  {
         
         ProcessInstance pi = eventNodeInstance.getProcessInstance();
         Node node = eventNodeInstance.getNode();
+        
         String bpmn2NodeId = (String) metadata.get("UniqueId");
         SimulationDataProvider provider = context.getDataProvider();
         
-        TimeGenerator timeGenerator=TimeGeneratorFactory.newTimeGenerator(provider.getSimulationDataForNode(node));
+        TimeGenerator timeGenerator=TimeGeneratorFactory.newTimeGenerator(provider.getSimulationDataForNode(node)); //Hongchao: this is where we need to add Timer duration 
         long duration = timeGenerator.generateTime();
+        if (node instanceof TimerNode){//is timer event
+        	System.out.println("simulating TimerNode: "+((TimerNode)node).getTimer().toString());
+        	//duration = ;
+        }
         System.out.println(String.format("advancing clock for activity %s with duration %d", eventNodeInstance.toString(),duration));
         context.getClock().advanceTime(duration, TimeUnit.MILLISECONDS);
         // set end time for processinstance end time
