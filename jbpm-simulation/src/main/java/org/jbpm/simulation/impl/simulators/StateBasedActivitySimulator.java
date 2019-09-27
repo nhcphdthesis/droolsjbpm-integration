@@ -18,6 +18,7 @@ package org.jbpm.simulation.impl.simulators;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.drools.core.time.TimeUtils;
 import org.jbpm.simulation.ActivitySimulator;
 import org.jbpm.simulation.SimulationContext;
 import org.jbpm.simulation.SimulationDataProvider;
@@ -47,8 +48,11 @@ public class StateBasedActivitySimulator implements ActivitySimulator {
        long duration = timeGenerator.generateTime();
        if (node instanceof TimerNode){//is timer event
        	System.out.println("simulating TimerNode: "+((TimerNode)node).getTimer().toString());
-       	//duration = ;
+       	long delay = TimeUtils.parseTimeString(((TimerNode)node).getTimer().getDelay());
+       	System.out.println(String.format("delay: %d",delay));
+       	duration = 2*60*1000;//set to 2min
        }
+       System.out.println(String.format("advancing time for state-based activity: %d",duration));
        context.getClock().advanceTime(duration, TimeUnit.MILLISECONDS);
        // set end time for processinstance end time
        context.setMaxEndTime(context.getClock().getCurrentTime());
