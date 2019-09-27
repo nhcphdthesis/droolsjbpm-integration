@@ -25,6 +25,7 @@ import org.jbpm.simulation.SimulationEvent;
 import org.jbpm.simulation.TimeGenerator;
 import org.jbpm.simulation.TimeGeneratorFactory;
 import org.jbpm.simulation.impl.events.ActivitySimulationEvent;
+import org.jbpm.workflow.core.node.TimerNode;
 import org.kie.api.definition.process.Node;
 import org.kie.api.runtime.process.NodeInstance;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -44,7 +45,10 @@ public class StateBasedActivitySimulator implements ActivitySimulator {
        
        TimeGenerator timeGenerator=TimeGeneratorFactory.newTimeGenerator(provider.getSimulationDataForNode(node));
        long duration = timeGenerator.generateTime();
-       
+       if (node instanceof TimerNode){//is timer event
+       	System.out.println("simulating TimerNode: "+((TimerNode)node).getTimer().toString());
+       	//duration = ;
+       }
        context.getClock().advanceTime(duration, TimeUnit.MILLISECONDS);
        // set end time for processinstance end time
        context.setMaxEndTime(context.getClock().getCurrentTime());
