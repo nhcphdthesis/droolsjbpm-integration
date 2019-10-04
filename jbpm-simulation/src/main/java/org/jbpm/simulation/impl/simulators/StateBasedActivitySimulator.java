@@ -52,10 +52,15 @@ public class StateBasedActivitySimulator implements ActivitySimulator {
     	   
        	System.out.println("simulating TimerNode: "+((TimerNode)node).getTimer().toString());
        	long delay = TimeUtils.parseTimeString(((TimerNode)node).getTimer().getDelay());
-
+       	
        	HashMap scheduleTable = new HashMap(); //later we can use this table to store scheduled time and calculate delay dynamically
-       	scheduleTable.put(String.format("%d",stateNode.getProcessInstance().getId()), DateTime.now());
-       	System.out.println(String.format("delay: %d for process instance %d. HashMap has values: ",delay,stateNode.getProcessInstance().getId(),scheduleTable.toString()));
+       	String proc_ist_id_str = String.format("%d",stateNode.getProcessInstance().getId());
+       	scheduleTable.put(proc_ist_id_str, DateTime.now());
+       	System.out.println(String.format("delay: %d for process instance %s. HashMap has values: %s, current time in PseudoClock: %d",
+       			delay,
+       			proc_ist_id_str,
+       			scheduleTable.get(proc_ist_id_str).toString(),
+       			context.getClock().getCurrentTime()));
        	duration = delay; //2*60*1000;//set to 2min
        }
        System.out.println(String.format("advancing time for state-based activity: %d",duration));
