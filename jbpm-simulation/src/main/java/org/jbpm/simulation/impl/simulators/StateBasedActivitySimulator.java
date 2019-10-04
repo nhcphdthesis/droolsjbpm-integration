@@ -29,6 +29,7 @@ import org.jbpm.simulation.TimeGeneratorFactory;
 import org.jbpm.simulation.impl.events.ActivitySimulationEvent;
 import org.jbpm.workflow.core.node.TimerNode;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.kie.api.definition.process.Node;
 import org.kie.api.runtime.process.NodeInstance;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -56,11 +57,12 @@ public class StateBasedActivitySimulator implements ActivitySimulator {
        	HashMap scheduleTable = new HashMap(); //later we can use this table to store scheduled time and calculate delay dynamically
        	String proc_ist_id_str = String.format("%d",stateNode.getProcessInstance().getId());
        	scheduleTable.put(proc_ist_id_str, DateTime.now());
-       	System.out.println(String.format("delay: %d for process instance %s. HashMap has values: %s, current time in PseudoClock: %d",
+       	//we can specify the scheduled timeslots, and we can get the time from the pysudo clock, so we can calculate how long a timer need to delay
+       	System.out.println(String.format("delay: %d for process instance %s. HashMap has values: %s, current time in PseudoClock: %d, parsed as: %s",
        			delay,
        			proc_ist_id_str,
        			scheduleTable.get(proc_ist_id_str).toString(),
-       			context.getClock().getCurrentTime()));
+       			context.getClock().getCurrentTime(),DateTimeFormat.longDateTime().print(context.getClock().getCurrentTime())));
        	duration = delay; //2*60*1000;//set to 2min
        }
        System.out.println(String.format("advancing time for state-based activity: %d",duration));
