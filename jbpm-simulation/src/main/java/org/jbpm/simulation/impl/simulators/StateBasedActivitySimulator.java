@@ -15,6 +15,7 @@
 
 package org.jbpm.simulation.impl.simulators;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +28,7 @@ import org.jbpm.simulation.TimeGenerator;
 import org.jbpm.simulation.TimeGeneratorFactory;
 import org.jbpm.simulation.impl.events.ActivitySimulationEvent;
 import org.jbpm.workflow.core.node.TimerNode;
+import org.joda.time.DateTime;
 import org.kie.api.definition.process.Node;
 import org.kie.api.runtime.process.NodeInstance;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -47,10 +49,14 @@ public class StateBasedActivitySimulator implements ActivitySimulator {
        TimeGenerator timeGenerator=TimeGeneratorFactory.newTimeGenerator(provider.getSimulationDataForNode(node));
        long duration = timeGenerator.generateTime();
        if (node instanceof TimerNode){//is timer event
+    	   
        	System.out.println("simulating TimerNode: "+((TimerNode)node).getTimer().toString());
        	long delay = TimeUtils.parseTimeString(((TimerNode)node).getTimer().getDelay());
-       	System.out.println(String.format("delay: %d",delay));
-       	duration = 2*60*1000;//set to 2min
+
+       	HashMap scheduleTable = new HashMap(); //later we can use this table to store scheduled time and calculate delay dynamically
+       	scheduleTable.put(String.format("%d",stateNode.getProcessInstance().getId()), DateTime.now());
+       	System.out.println(String.format("delay: %d for process instance %d. HashMap has values: ",delay,stateNode.getProcessInstance().getId(),scheduleTable.toString()));
+       	duration = delay; //2*60*1000;//set to 2min
        }
        System.out.println(String.format("advancing time for state-based activity: %d",duration));
        context.getClock().advanceTime(duration, TimeUnit.MILLISECONDS);
