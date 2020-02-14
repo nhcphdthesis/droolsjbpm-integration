@@ -48,13 +48,14 @@ public class HumanTaskActivitySimulator implements ActivitySimulator {
         
         TimeGenerator timeGenerator=TimeGeneratorFactory.newTimeGenerator(properties);
         long duration = timeGenerator.generateTime();
-        //here 1 means simularion duration (one day)
+        //here 1 means simulation duration (one day)
         context.getStaffPoolManager().registerPool(pi.getProcessId(), node, 1);
         StaffPool pool = context.getStaffPoolManager().getActivityPool(node.getName());
         //this is where waiting time is determined. 
         //Hongchao, introduce scheduled time
         // if current time later than scheduled time: see if it is possible to start now
         // if current time earlier than scheduled time: start when the scheduled time arrives
+        //update: not used anymore. schedule time is decoupled from activity execution using timer events which read scheduled times into the timer delay.
         long scheduledStartTime = context.getClock().getCurrentTime() ;
         System.out.println(String.format("current time: %d", scheduledStartTime));
         //scheduledStartTime += 1000*60*60*2;//delay 2 hours

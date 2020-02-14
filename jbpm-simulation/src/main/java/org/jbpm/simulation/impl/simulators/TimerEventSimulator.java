@@ -13,7 +13,7 @@ import org.kie.api.definition.process.Node;
 import org.kie.api.runtime.process.NodeInstance;
 import org.kie.api.runtime.process.ProcessInstance;
 
-//Hongchao Philips
+//Hongchao Philips introduce timer simulator as a mechanism to allow scheduling. 
 public class TimerEventSimulator extends EventSimulator {
 	public SimulationEvent simulate(Object activity, SimulationContext context) {
         NodeInstance eventNodeInstance = (NodeInstance) activity;
@@ -26,9 +26,10 @@ public class TimerEventSimulator extends EventSimulator {
         String bpmn2NodeId = (String) metadata.get("UniqueId");
         SimulationDataProvider provider = context.getDataProvider();
         
+        long scheduledTime = startTime+5000;//Hongchao: this scheduledTime can be read from a schedule table.
         //TimeGenerator timeGenerator=TimeGeneratorFactory.newTimeGenerator(provider.getSimulationDataForNode(node));
-        long duration = 5000;//timeGenerator.generateTime();//Hongchao wait for the timer to fire event
-        System.out.println(String.format("advancing clock for activity %s with duration %d", eventNodeInstance.toString(),duration));
+        long duration = scheduledTime-startTime;//timeGenerator.generateTime();//Hongchao wait for the timer to fire event
+        System.out.println(String.format("advancing clock for timer event activity %s with duration %d", eventNodeInstance.toString(),duration));
         context.getClock().advanceTime(duration, TimeUnit.MILLISECONDS);
         // set end time for processinstance end time
         context.setMaxEndTime(context.getClock().getCurrentTime());
@@ -36,6 +37,6 @@ public class TimerEventSimulator extends EventSimulator {
         String type = (String) provider.getProcessDataForNode(node).get("node.type");
 
         return new ActivitySimulationEvent(pi.getProcessId(), context.getProcessInstanceId(), node.getName(), bpmn2NodeId, duration,
-                startTime, context.getClock().getCurrentTime(), type);
+                startTime, context.getClock().getCurrentTime(), "schedule-timer");
     }
 }

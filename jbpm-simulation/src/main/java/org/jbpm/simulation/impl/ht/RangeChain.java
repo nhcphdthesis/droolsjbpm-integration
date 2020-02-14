@@ -50,6 +50,7 @@ public class RangeChain {
                 long gap = 0;
                 if (previousRange != null) {
                     gap = previousRange.gap(range.getInterval()).toDurationMillis();
+                    System.out.println("gap: "+gap);
                     allocatedWork.setWaitTime(allocatedWork.getWaitTime() + gap);
                 }
                 allocatedWork.merge(range.allocate(range.getInterval().getStartMillis(), duration-allocatedWork.getAllocatedTime()));

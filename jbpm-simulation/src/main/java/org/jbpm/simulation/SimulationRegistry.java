@@ -24,12 +24,14 @@ import org.jbpm.simulation.impl.simulators.GatewaySimulator;
 import org.jbpm.simulation.impl.simulators.HumanTaskActivitySimulator;
 import org.jbpm.simulation.impl.simulators.StartEventSimulator;
 import org.jbpm.simulation.impl.simulators.StateBasedActivitySimulator;
+import org.jbpm.simulation.impl.simulators.TimerEventSimulator;
 import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.EventNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.Join;
 import org.jbpm.workflow.core.node.Split;
 import org.jbpm.workflow.core.node.StartNode;
+import org.jbpm.workflow.core.node.TimerNode;
 import org.kie.api.definition.process.Node;
 
 
@@ -47,6 +49,7 @@ public class SimulationRegistry {
         simulators.put(Split.class, new GatewaySimulator());
         simulators.put(Join.class, new GatewaySimulator());
         simulators.put(EventNode.class, new EventSimulator());
+        simulators.put(TimerNode.class, new TimerEventSimulator());//Hongchao, use timer simulator for scheduling
     }
     
     public static SimulationRegistry getInstance() {

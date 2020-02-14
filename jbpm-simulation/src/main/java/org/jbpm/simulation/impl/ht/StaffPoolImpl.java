@@ -88,7 +88,7 @@ public class StaffPoolImpl implements StaffPool {
     			this.workingHours = timeUnit.convert(workingHoursOpt, TimeUnit.HOURS);
     		}
     		System.out.println(String.format("StaffPoolImpl adding default working hours range, poolSize: %d",poolSize));
-    		rangeChain.addRange(new Range(8, 18, poolSize));//Hongchao: changed default working hours
+    		rangeChain.addRange(new Range(0, 24, poolSize));//Hongchao: changed default working hours
 		}
 		this.poolCapacity = poolSize * this.workingHours;
 		
