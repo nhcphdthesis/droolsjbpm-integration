@@ -32,7 +32,7 @@ public class SimulationNodeInstance extends NodeInstanceImpl {
 
     @Override
     public void internalTrigger(NodeInstance from, String type) {
-    	System.out.println("Simulation node instance internal trigger: " +from.getNodeName());
+    	System.out.println("Simulation node instance internal trigger of"+this.getNodeName()+" from: " +from.getNodeName());
         SimulationContext context = SimulationContext.getContext();
         System.out.println("node type: "+getNode().getClass().toString());
         ActivitySimulator simulator = context.getRegistry().getSimulator(getNode());

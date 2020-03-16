@@ -66,6 +66,12 @@ import org.kie.api.definition.process.Node;
 
 public class BPMN2SimulationDataProvider implements SimulationDataProvider {
     private Definitions def;
+    private Map<String, String> scheduleTable = new HashMap<String, String>(){
+    	{
+    		put("1","3000");
+    		put("2","6000");
+    	}
+    };//Hongchao add scheduleTable;
 
     public BPMN2SimulationDataProvider(Definitions def) {
         this.def = def;
@@ -82,6 +88,14 @@ public class BPMN2SimulationDataProvider implements SimulationDataProvider {
     public Map<String, Object> getSimulationDataForNode(Node node) {
         String nodeId = (String) node.getMetaData().get("UniqueId");
         return getSimulationDataForNode(nodeId);
+    }
+    
+    //Hongchao: get scheduled time from a predefined table
+    public String getScheduledTime(String s) {
+    	if (scheduleTable.containsKey(s)){
+    		return (String)(scheduleTable.get(s));
+    	}
+    	return "3000";
     }
     public Map<String, Object> getSimulationDataForNode(
             String nodeId) {
