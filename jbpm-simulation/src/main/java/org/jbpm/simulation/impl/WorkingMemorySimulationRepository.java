@@ -138,7 +138,7 @@ public class WorkingMemorySimulationRepository extends InMemorySimulationReposit
     @Override
     public void close() {
     	//Hongchao, outputs events
-    	System.out.println("outputing event log: ");
+    	System.out.println("outputing event log in WM close(): ");
     	for (SimulationEvent e : this.getEvents()) {
     		System.out.println(e.toString());
     	}

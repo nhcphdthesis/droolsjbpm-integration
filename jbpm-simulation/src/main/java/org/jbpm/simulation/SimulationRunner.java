@@ -65,6 +65,7 @@ public class SimulationRunner {
         
         Resource[] resources = new Resource[rules.length];
         for (int i = 0; i < rules.length; i++) {
+        	System.out.println("getting rules in runSimulation: "+rules[i]);
             resources[i] = ResourceFactory.newClassPathResource(rules[i]);
         }
         
@@ -80,6 +81,9 @@ public class SimulationRunner {
         SystemOutLogger logger = new SystemOutLogger();
         logger.setLog(true);
         logger.log("Philips simulation logged");
+        logger.log("bpmn2Container:"+bpmn2Container);
+        logger.log("runRules:"+runRules);
+        logger.log("rules:"+rules.toString());
         
         PathFinder finder = PathFinderFactory.getInstance(bpmn2Container);
         
