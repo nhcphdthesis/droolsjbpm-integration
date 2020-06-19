@@ -39,7 +39,7 @@ public class SimulateProcessPathCommand implements ExecutableCommand<KieSession>
     private SimulationPath path;
     
     public SimulateProcessPathCommand(String processId, SimulationContext context, SimulationPath path) {
-    	System.out.println("initializing simulateprocessoathcommand");
+    	System.out.println("initializing simulateprocessoathcommand for process id: "+processId);
         this.processId = processId;
         this.simContext = context;
         this.path = path;
@@ -60,6 +60,9 @@ public class SimulateProcessPathCommand implements ExecutableCommand<KieSession>
         simContext.setCurrentPath(path);
         SimulationInfo simInfo = simContext.getRepository().getSimulationInfo();
         if (simInfo != null) {
+//        	System.out.println("sesson: "+session);
+//        	System.out.println("kieBase: "+session.getKieBase());
+//        	System.out.println("process: "+session.getKieBase().getProcess(processId));
             simInfo.setProcessName(session.getKieBase().getProcess(processId).getName());
             simInfo.setProcessVersion(session.getKieBase().getProcess(processId).getVersion());
         }
@@ -67,6 +70,8 @@ public class SimulateProcessPathCommand implements ExecutableCommand<KieSession>
         simContext.resetMaxEndTime();
         simContext.getExecutedNodes().clear();
         simContext.incrementProcessInstanceId();
+        logger.log("registerng real world start time");
+        //simContext.setRealworldStartTime(simContext.getClock().getCurrentTime()); //Hongchao register the start time of all simulations
 
         long instanceId = -1;
         ProcessInstance pi = null;

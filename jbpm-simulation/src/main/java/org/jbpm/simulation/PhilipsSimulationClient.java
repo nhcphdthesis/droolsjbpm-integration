@@ -42,7 +42,7 @@ public class PhilipsSimulationClient {
 	protected static void runPhilipsSimulation() {
 		SystemOutLogger logger = new SystemOutLogger();
         logger.setLog(true);
-		InputStream bpmn2stream = PhilipsSimulationClient.class.getResourceAsStream("/BasicWF.v1.0.bpmn2");
+		InputStream bpmn2stream = PhilipsSimulationClient.class.getResourceAsStream("/org.jbpm.CathPath.v1.0.bpmn2");
         
         try {
 			System.out.println(bpmn2stream==null);
@@ -60,7 +60,7 @@ public class PhilipsSimulationClient {
         rules[0]="onevent.simulation.rules.drl";
         
         //org.eclipse.bpmn2.Definitions definitions = BPMN2Utils.getDefinitions(bpmn2stream);
-		String processId="src.main.resources.BasicWF";
+		String processId="CathLabProcess";
 		int numberOfAllInstances=5;
 		long interval=50000;
 		

@@ -39,7 +39,27 @@ public class SimulationContext {
     private int loopLimit = 2;
     private long processInstanceId;
     
-    public static SimulationContext getContext() {
+    private long startOffset;
+    
+    public long getStartOffset() {
+		return startOffset;
+	}
+
+	public void setStartOffset(long startOffset) {
+		this.startOffset = startOffset;
+	}
+	
+	private boolean testFeatureEnabled = false;
+
+	public boolean isTestFeatureEnabled() {
+		return testFeatureEnabled;
+	}
+
+	public void setTestFeatureEnabled(boolean testFeatureEnabled) {
+		this.testFeatureEnabled = testFeatureEnabled;
+	}
+
+	public static SimulationContext getContext() {
         return simulationContextThreadLocal.get();
     }
 

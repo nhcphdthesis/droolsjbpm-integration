@@ -45,6 +45,9 @@ public class AllocatedWork {
     
     public boolean isAllocated() {
     	System.out.println(String.format("IsAllocated? %s. duration+waitTime: %d, allocatedTime: %d", duration + waitTime == allocatedTime,duration+waitTime,allocatedTime));
+    	//if wait time is 0, then if allocated time covers duration, then the work is succesfully allocated
+    	//if wait time is not 0, if fully allocated (allocated time (==end time) is start time+duration, then wait time + duration is allocated time (end time))
+    	//if wait time is not 0, if partially allocated (allocated tie = limit - start time), 
         return duration + waitTime == allocatedTime;
     }
     public void merge(AllocatedWork allocate) {

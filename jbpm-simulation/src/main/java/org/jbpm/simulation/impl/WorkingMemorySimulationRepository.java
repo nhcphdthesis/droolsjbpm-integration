@@ -139,15 +139,15 @@ public class WorkingMemorySimulationRepository extends InMemorySimulationReposit
     public void close() {
     	//Hongchao, outputs events
     	System.out.println("outputing event log in WM close(): ");
-    	for (SimulationEvent e : this.getEvents()) {
-    		System.out.println(e.toString());
-    	}
+//    	for (SimulationEvent e : this.getEvents()) {
+//    		System.out.println(e.toString());
+//    	}
     	DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     	try (
                 BufferedWriter writer = Files.newBufferedWriter(Paths.get("./simulation_log.csv"));
 
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                        .withHeader("process-instance-id", "event-id","event-name", "event-type", "startTime","endTime"));
+                        .withHeader("process-instance-id", "event-name",  "startTime","endTime","event-id","event-type"));
     			
             ) {
     		for (SimulationEvent e : this.getEvents()) {
@@ -186,7 +186,7 @@ public class WorkingMemorySimulationRepository extends InMemorySimulationReposit
     				break;
     			}
         		if(output) {
-        			csvPrinter.printRecord(e.getProcessInstanceId(), event_id,event_name, event_type, startTime,endTime);
+        			csvPrinter.printRecord(e.getProcessInstanceId(), event_name, startTime,endTime,event_id,event_type);
         		}
         	}
                 

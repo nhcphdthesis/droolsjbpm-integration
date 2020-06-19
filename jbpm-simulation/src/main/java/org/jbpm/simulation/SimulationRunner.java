@@ -16,6 +16,7 @@
 package org.jbpm.simulation;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,9 +78,22 @@ public class SimulationRunner {
         SimulationContext context = SimulationContextFactory.newContext(new BPMN2SimulationDataProvider(bpmn2Container), new WorkingMemorySimulationRepository(runRules, rules));
         SimulationDataProvider provider = context.getDataProvider();
         
-        //Hongchao
         SystemOutLogger logger = new SystemOutLogger();
         logger.setLog(true);
+        context.setTestFeatureEnabled(true);//adding test features
+        long startOffset =0;
+        Calendar localCalendar = Calendar.getInstance();
+        long simulationStartTime = localCalendar.getTimeInMillis();
+        localCalendar.set(Calendar.HOUR_OF_DAY, 8);
+        localCalendar.set(Calendar.MINUTE, 0);
+        localCalendar.set(Calendar.SECOND, 0);
+        long simulationWorldStartTime = localCalendar.getTimeInMillis();
+        startOffset = simulationStartTime - simulationWorldStartTime;
+        logger.log("startoffset: "+startOffset);
+        context.setStartOffset(startOffset);
+        //Hongchao
+
+        
         logger.log("Philips simulation logged");
         logger.log("bpmn2Container:"+bpmn2Container);
         logger.log("runRules:"+runRules);

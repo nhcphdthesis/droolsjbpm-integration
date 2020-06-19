@@ -36,6 +36,15 @@ import org.kie.api.definition.process.Node;
 public class StaffPoolImpl implements StaffPool {
     
     private Map<String, Object> properties;
+    //Hongchao introduce roles in staff pool
+    private String role;
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	private int poolSize;
 	private long duration;
@@ -64,6 +73,10 @@ public class StaffPoolImpl implements StaffPool {
 	    
 	    properties = provider.getSimulationDataForNode(element);
 	    
+	    if (SimulationContext.getContext().isTestFeatureEnabled()) {
+	    	System.out.println("before assigning staff pool, checking element name: "+element.getName());
+	    }
+	    
 	    timeGenerator=TimeGeneratorFactory.newTimeGenerator(properties);
 		
 		this.elementTimeUnit = SimulationUtils.getTimeUnit(properties);
@@ -87,8 +100,9 @@ public class StaffPoolImpl implements StaffPool {
     		if (workingHoursOpt > 0) {
     			this.workingHours = timeUnit.convert(workingHoursOpt, TimeUnit.HOURS);
     		}
+    		int startHour = 8;
     		System.out.println(String.format("StaffPoolImpl adding default working hours range, poolSize: %d",poolSize));
-    		rangeChain.addRange(new Range(0, 24, poolSize));//Hongchao: changed default working hours
+    		rangeChain.addRange(new Range(startHour, (int) (startHour+workingHoursOpt), poolSize));//Hongchao: changed default working hours
 		}
 		this.poolCapacity = poolSize * this.workingHours;
 		
@@ -104,10 +118,12 @@ public class StaffPoolImpl implements StaffPool {
 	
 	
 	protected long allocate(long startTime, long duration) {
-		System.out.println(String.format("StaffPoolImpl Allocating resource in StaffPoolImp with start time: %d, duration: %d",startTime,duration));
+		//Hongchao: offset start time to fix the "current time vs. expected start time" problem
+		long offsetStartTime = startTime - SimulationContext.getContext().getStartOffset();
+		System.out.println(String.format("StaffPoolImpl Allocating resource in StaffPoolImp with start time: %d, duration: %d, offset startTime: %d",startTime,duration,offsetStartTime));
 		performedWork += duration;
 	    
-	    return rangeChain.allocateWork(startTime, duration);
+	    return rangeChain.allocateWork(offsetStartTime, duration);
 	}
 	
 

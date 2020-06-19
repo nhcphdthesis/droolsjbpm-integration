@@ -62,7 +62,7 @@ public class AllocatedResources {
              long allocated = allocatedTill.get(0);//get the soonest allocated one
              System.out.println(String.format("allocatedTill.get(0) [ie.allocated]: %d, limit:%d", allocated,limit));
              if (allocated == limit) {
-            	 System.out.println("allocated == limit, now waiting time = allocated-startTime");
+            	 System.out.println("allocated == limit, now waiting time = allocated-startTime, wait for the soonest finishing one");
                  waitTime = allocated - startTime;
                  allocatedWork.setAllocatedTime(0);
                  allocatedWork.setWaitTime(waitTime);

@@ -34,7 +34,7 @@ public class RangeChain {
         Interval previousRange = null;
         
         for (Range range : availableRanges) {
-        	System.out.println(String.format("current range: start: %d, end: %d", range.getStart(),range.getEnd()));
+        	System.out.println(String.format("current available range: start: %d, end: %d", range.getStart(),range.getEnd()));
             if (range.contains(startTime)) {
                 System.out.println("range.contains(startTime)");
                 allocatedWork.merge(range.allocate(startTime, duration));

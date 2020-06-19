@@ -60,12 +60,13 @@ public class Range implements Comparable<Range> {
         localCalendar.set(Calendar.HOUR_OF_DAY, end);
         long endInstant = localCalendar.getTimeInMillis();
         interval = new Interval(startInstant, endInstant);
-        System.out.println(String.format("range interval start:%d, end:%d, interval:%s", startInstant,endInstant,interval.toString()));
+        System.out.println(String.format("range interval start:%d, end:%d, interval:%s, interval.contains(time): %s", startInstant,endInstant,interval.toString(),interval.contains(time)));
         return interval.contains(time);
         
     }
     
     public AllocatedWork allocate(long startTime, long duration) {
+    	System.out.println(String.format("AllocatedWork allocatedWork = this.resources.allocate(startTime [%d], duration[%d], interval.getEndMillis()) [%d]", startTime,duration,interval.getEndMillis()) );
         AllocatedWork allocatedWork = this.resources.allocate(startTime, duration, interval.getEndMillis());
         
         return allocatedWork;
