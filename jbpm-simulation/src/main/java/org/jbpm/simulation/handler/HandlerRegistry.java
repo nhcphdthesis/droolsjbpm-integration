@@ -32,8 +32,10 @@ public class HandlerRegistry {
         
         if (flowElement instanceof Gateway) {
             if (((Gateway) flowElement).getGatewayDirection() == GatewayDirection.CONVERGING) {
+            	System.out.println("getting converging gateway handler in HanlderRegistry");
                 return new ConvergingGatewayElementHandler();
             } else {
+            	System.out.println("getting gateway handler in HanlderRegistry");
                 return new GatewayElementHandler();
             }
         }  else if (flowElement instanceof AdHocSubProcess) {

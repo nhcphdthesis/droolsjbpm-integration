@@ -95,7 +95,7 @@ public class StaffPoolImpl implements StaffPool {
 		    }
 		    
 		} else {
-    		long workingHoursOpt = (long)SimulationUtils.asDouble(properties.get(SimulationConstants.WORKING_HOURS));
+    		long workingHoursOpt = 12;//(long)SimulationUtils.asDouble(properties.get(SimulationConstants.WORKING_HOURS));
     		System.out.println(String.format("StaffPoolImpl workingHoursOpt: %d",workingHoursOpt));
     		if (workingHoursOpt > 0) {
     			this.workingHours = timeUnit.convert(workingHoursOpt, TimeUnit.HOURS);

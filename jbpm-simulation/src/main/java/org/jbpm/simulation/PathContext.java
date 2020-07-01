@@ -49,6 +49,7 @@ public class PathContext {
 
     protected void setCanBeFinishedCounter(int canBeFinishedCounter) {
         this.canBeFinishedCounter = canBeFinishedCounter;
+        System.out.println("setting canBeFinishedCounter: "+canBeFinishedCounter);
     }
 
     public PathContext() {
@@ -103,14 +104,18 @@ public class PathContext {
             
             if (canBeFinishedCounter == 1) {
                 this.canBeFinished = true;
+                System.out.println("setting canbefinished to true");
             }
             canBeFinishedCounter--;
+            System.out.println("canBeFinishedCounter--: "+canBeFinishedCounter);
         } else {
 
             if (canBeFinishedCounter == 0) {
                 this.canBeFinished = false;
+                System.out.println("setting canbefinished to false");
             } 
             canBeFinishedCounter++;
+            System.out.println("canBeFinishedCounter++: "+canBeFinishedCounter);
             
         }
     }

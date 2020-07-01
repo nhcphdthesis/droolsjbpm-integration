@@ -31,7 +31,7 @@ public class EventElementHandler extends MainElementHandler {
     @Override
     public boolean handle(FlowElement element, PathContextManager manager) {
         List<EventDefinition> throwDefinitions = getEventDefinitions(element);
-    
+        System.out.println("definitions: "+throwDefinitions);
         if (throwDefinitions != null && !throwDefinitions.isEmpty()) {
             for (EventDefinition def : throwDefinitions) {
                 String key = "";

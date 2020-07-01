@@ -102,6 +102,7 @@ public class SimulationRunner {
         PathFinder finder = PathFinderFactory.getInstance(bpmn2Container);
         
         List<SimulationPath> paths = finder.findPaths(new SimulationFilterPathFormatConverter(provider));
+        logger.log("paths: "+paths);
         
         // TODO when introduced configurable start time that should be used instead of currentTimeMillis
         context.getRepository().setSimulationInfo(new SimulationInfo(System.currentTimeMillis(), processId, numberOfAllInstances, interval));

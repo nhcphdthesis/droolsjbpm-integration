@@ -36,7 +36,6 @@ public class GatewayElementHandler extends MainElementHandler {
     public boolean handle(FlowElement element, PathContextManager manager) {
         
         this.manager = manager;
-        
         if (element instanceof ExclusiveGateway) {
             handleExclusiveGateway(getOutgoing(element));
             return true;
@@ -117,16 +116,23 @@ public class GatewayElementHandler extends MainElementHandler {
     protected void handleParallelGateway(List<SequenceFlow> outgoing) {
         PathContext context = manager.getContextFromStack();
         boolean canBeFinished = context.isCanBeFinished();
+        System.out.println("getting canBeFinished in handling Parallel gateway: "+canBeFinished);
+        System.out.println("setting canBeFinished to false");
         context.setCanBeFinished(false);
         manager.addAllToPath(outgoing, context);
         int counter = 0;
+        System.out.println("iterating outgoing flows for element");
         for (SequenceFlow seqFlow : outgoing) {
             counter++;
             FlowElement target = seqFlow.getTargetRef();
-
+            System.out.println("target element: "+target.getName());
             if (counter == outgoing.size()) {
+            	System.out.println("counter == outgoing.size(), meaning we have processed all the branches of this parallel gateway split");
                 if (manager.getPaths().size() == 1) {
-                    context.setCanBeFinished(canBeFinished);
+                	System.out.println("manager.getPaths().size() == 1");
+                	System.out.println("setting canBeFinished to: "+canBeFinished);
+                    //context.setCanBeFinished(canBeFinished);
+                	context.setCanBeFinished(true); //Hongchao 2020-0701 fix parallelgateway converging problem
 
                 } else {
                     Iterator<PathContext> it = manager.getPaths().iterator();
@@ -134,6 +140,7 @@ public class GatewayElementHandler extends MainElementHandler {
                     while (it.hasNext()) {
                         PathContext pathContext = (PathContext) it.next();
                         if (pathContext.getType() == Type.ACTIVE) {
+                        	System.out.println("pathContext.getType() == Type.ACTIVE");
                             pathContext.setCanBeFinished(canBeFinished);
                         }
                     }

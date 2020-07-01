@@ -147,7 +147,7 @@ public class PathContextManager {
         PathContext context = getContextFromStack();
 
         if (context.isCanBeFinished()) {
-
+        	System.out.println("context.isCanBeFinished() in finalizing path");
             // no outgoing sequence flow means end of path
             PathContext completePath = this.paths.pop();
             completePath.setType(Type.COMPLETED);
@@ -189,9 +189,12 @@ public class PathContextManager {
     }
     
     public void complete() {
+    	System.out.println("manager.complete");
         for (PathContext context : this.paths) {
-            
+        	System.out.println("context path: "+context.getPathElements());
+        	System.out.println("context path type: "+context.getType());
             if (context.getType() != PathContext.Type.ROOT && context.getType() != PathContext.Type.TEMP) {
+            	System.out.println("adding to completed: ");
                 addToCompleted(context);
             }
         }

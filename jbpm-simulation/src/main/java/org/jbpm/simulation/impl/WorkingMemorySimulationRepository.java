@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.jbpm.simulation.AggregatedSimulationEvent;
+import org.jbpm.simulation.SimulationContext;
 import org.jbpm.simulation.SimulationEvent;
 import org.jbpm.simulation.impl.events.AggregatedActivitySimulationEvent;
 import org.jbpm.simulation.impl.events.AggregatedEndEventSimulationEvent;
@@ -165,17 +166,17 @@ public class WorkingMemorySimulationRepository extends InMemorySimulationReposit
     				HumanTaskActivitySimulationEvent hte = (HumanTaskActivitySimulationEvent)e;
     				event_name = hte.getActivityName();
     				event_id = hte.getActivityId();
-    				startTime=dateFormat.format(new Date(e.getStartTime()));
-    				endTime = dateFormat.format(new Date(e.getEndTime()));
+    				startTime=dateFormat.format(new Date(e.getStartTime()-SimulationContext.getContext().getStartOffset()));
+    				endTime = dateFormat.format(new Date(e.getEndTime()-SimulationContext.getContext().getStartOffset()));
     				break;
     			case "startEvent":
     				event_name="startEvent";
-    				startTime=dateFormat.format(new Date(e.getStartTime()));
+    				startTime=dateFormat.format(new Date(e.getStartTime()-SimulationContext.getContext().getStartOffset()));
     				endTime=startTime;
     				break;
     			case "endEvent":
     				event_name="endEvent";
-    				endTime = dateFormat.format(new Date(e.getEndTime()));
+    				endTime = dateFormat.format(new Date(e.getEndTime()-SimulationContext.getContext().getStartOffset()));
     				startTime=endTime;
     				break;
     			case "process-instance":

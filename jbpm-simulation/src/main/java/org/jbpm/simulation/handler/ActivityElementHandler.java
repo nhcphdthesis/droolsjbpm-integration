@@ -99,6 +99,7 @@ public class ActivityElementHandler extends MainElementHandler {
             FlowElement target = seqFlow.getTargetRef();
 
             if (counter == outgoing.size()) {
+            	System.out.println("setting can be finished in handle all paths of activity");
                 context.setCanBeFinished(true);
             }
             manager.addToPath(seqFlow, context);

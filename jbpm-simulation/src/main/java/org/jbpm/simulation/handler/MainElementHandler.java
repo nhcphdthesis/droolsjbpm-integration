@@ -42,15 +42,17 @@ public class MainElementHandler implements ElementHandler {
     public boolean handle(FlowElement element, PathContextManager manager) {
         PathContext context = manager.getContextFromStack();
         if (!(element instanceof SubProcess)) {
+        	System.out.println("handling element: "+element.getName());
             manager.addToPath(element, context);
         }
         
         List<SequenceFlow> outgoing = getOutgoing(element);
-
+        System.out.println("outgoing: "+outgoing);
         if (outgoing != null && !outgoing.isEmpty()) {
             boolean handled = false;
             if (element instanceof Gateway) {
                 Gateway gateway = ((Gateway) element);
+                System.out.println("handling gateway: "+gateway.getName());
                 if (gateway.getGatewayDirection() == GatewayDirection.DIVERGING) {
                     
                     handled = HandlerRegistry.getHandler(element).handle(element, manager);
@@ -62,26 +64,35 @@ public class MainElementHandler implements ElementHandler {
                     }
                 }
             } else if (element instanceof Activity) {
+            	System.out.println("handling activity: "+element.getName());
                 handled = HandlerRegistry.getHandler(element).handle(element, manager);
             } else if (element instanceof IntermediateThrowEvent) {
+            	System.out.println("handling intermediate event: "+element.getName());
                 handled = HandlerRegistry.getHandler(element).handle(element, manager);
             //} else if (element instanceof IntermediateCatchEvent) {//Hongchao
                 //handled = HandlerRegistry.getHandler(element).handle(element, manager);
             } else {
+            	System.out.println("handling others: "+element.getName());
                 handled = HandlerRegistry.getHandler().handle(element, manager);
             }
             
             if (!handled && BPMN2Utils.isAdHoc(element)) {
+            	System.out.println("clearing context: ");
                 manager.clearCurrentContext();
             }
         } else {
+        	System.out.println("else branch for: "+element.getName());
             ElementHandler handelr = HandlerRegistry.getHandler(element);
             if (handelr != null) {
+            	System.out.println("handelr != null");
+            	System.out.println("handelr type: "+handelr.getClass().getName());
                 boolean handled = handelr.handle(element, manager);
                 if (!handled) {
+                	System.out.println("not handeled, finalizing path");
                     manager.finalizePath();
                 }
             } else {
+            	System.out.println("handelr is null, finalizing path");
                 manager.finalizePath();
             }
         }
@@ -101,6 +112,7 @@ public class MainElementHandler implements ElementHandler {
             EndEvent end = (EndEvent) startAt;
 
             throwDefinitions = end.getEventDefinitions();
+            System.out.println("End Event definition: "+throwDefinitions);
         } else if (startAt instanceof IntermediateCatchEvent) { //Hongchao
         	for (EventDefinition ed : ((IntermediateCatchEvent) startAt).getEventDefinitions()) {
         		if (ed instanceof TimerEventDefinition) {

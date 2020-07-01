@@ -102,9 +102,12 @@ public class BPMN2PathFinderImpl implements PathFinder {
     public List<PathContext> findPaths() {
         Map<String, FlowElement> catchingEvents = new HashMap<String, FlowElement>();
         if (this.definitions != null) {
+        	System.out.println("this.definitions!=null");
             List<RootElement> rootElements = definitions.getRootElements();
             for (RootElement root : rootElements) {
+            	System.out.println("root:"+root.getId());
                 if (root instanceof Process) {
+                	System.out.println("the root is a process");
                     Process process = (Process) root;
                     readFlowElements(process, catchingEvents);
                 }
@@ -117,8 +120,10 @@ public class BPMN2PathFinderImpl implements PathFinder {
         ElementHandler handler = HandlerRegistry.getMainHandler();
         // show what was found
         for (FlowElement fe : triggerElements) {
+        	System.out.println("element: "+fe.getName());
             if (fe instanceof StartEvent || fe instanceof Activity || fe instanceof IntermediateCatchEvent) {
-                handler.handle(fe, manager);
+                boolean handled = handler.handle(fe, manager);
+                System.out.println("element "+fe.getName()+"handled: "+handled);
             }
         }
         
