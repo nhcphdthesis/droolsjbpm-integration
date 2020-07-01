@@ -131,7 +131,11 @@ public class GatewayElementHandler extends MainElementHandler {
                 if (manager.getPaths().size() == 1) {
                 	System.out.println("manager.getPaths().size() == 1");
                 	System.out.println("setting canBeFinished to: "+canBeFinished);
-                    //context.setCanBeFinished(canBeFinished);
+                    //context.setCanBeFinished(canBeFinished); //Hongchao 2020-0701 this is the original code. 
+                	//When there are multiple parallel gateway split-join combinations, the "canBeFinishedCounter" in context does not update correctly. 
+                	//This is because the code continues to add to the counter while subtracting from the counter should be the correct behavior when all branches have been executed. 
+                	//To reproduce the problem, create a model with sequential split-join parallel gateway combinations, then in the Workbench use "paths": the simulator will fail to find paths because it cannot correctly finish traversing the paths. 
+                	//as a fix, put TRUE to this function rather than using the saved boolean value
                 	context.setCanBeFinished(true); //Hongchao 2020-0701 fix parallelgateway converging problem
 
                 } else {
